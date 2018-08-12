@@ -48,10 +48,19 @@ export default {
             data: this.form
           }).then(res => {
             if (res.data.meta.status === 200) {
-              this.$message.success('恭喜你,登录成功')
+              localStorage.setItem('myToken', res.data.data.token)
+              this.$message({
+                type: 'success',
+                message: '恭喜你,登录成功',
+                center: true
+              })
               this.$router.push('home')
             } else {
-              this.$message.error('用户名或密码错误!')
+              this.$message({
+                type: 'error',
+                message: '用户名或密码错误!',
+                center: true
+              })
             }
           })
         } else {

@@ -3,10 +3,11 @@ import Router from 'vue-router'
 // 引入Login.vue组件
 import Login from '@/components/Login.vue'
 import Home from '@/components/Home.vue'
+import Users from '@/components/Users.vue'
 // 使用router
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -20,7 +21,23 @@ export default new Router({
     {
       path: '/home',
       component: Home,
-      name: 'home'
+      name: 'home',
+      children: [
+        {
+          path: '/users',
+          component: Users,
+          name: 'users'
+        }
+      ]
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  let token = localStorage.getItem('myToken')
+  if (to.path === '/login' || token) {
+    next()
+  } else {
+    next('/login')
+  }
+})
+export default router
